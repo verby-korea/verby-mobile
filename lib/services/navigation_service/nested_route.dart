@@ -35,10 +35,10 @@ RouteArguments(
       ];
 }
 
-typedef NestedRouteBuilder = Widget? Function({
-  required Widget child,
-  required RouteData? data,
-});
+typedef NestedRouteBuilder = Widget? Function(
+  Widget child,
+  RouteData? data,
+);
 
 class NestedRouteException implements Exception {
   final String message;
@@ -103,14 +103,13 @@ extension on NestedRoute {
     );
     if (subRoute == null) throw unsupportedException;
 
-    final subRouteBuilder = builder(
-      child: subRoute.build(
-        paths: paths,
-        index: index + 1,
-        data: data,
-      ),
+    final child = subRoute.build(
+      paths: paths,
+      index: index + 1,
       data: data,
     );
+
+    final subRouteBuilder = builder(child, data);
 
     return subRouteBuilder ?? buildDefaultWidget(paths: paths, data: data);
   }

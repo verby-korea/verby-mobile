@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 enum RouteTransitions {
   fade,
   none,
-  slideLeft,
-  slideRight,
   slideTop,
+  slideRight,
+  slideLeft,
 }
 
 extension RouteBuildExtension on RouteTransitions {
