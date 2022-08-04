@@ -91,7 +91,9 @@ extension on NestedRoute {
     required int index,
     required RouteData? data,
   }) {
-    if (index >= paths.length) return buildDefaultWidget(paths: paths, data: data);
+    if (index >= paths.length) {
+      return builder(const SizedBox(), data) ?? buildUnsupportedRouteWidget(paths: paths, data: data);
+    }
 
     final unsupportedException = NestedRouteException(
       message: '[NestedRouteException] unsupported route - ${paths.join('/')}',
@@ -111,23 +113,29 @@ extension on NestedRoute {
 
     final subRouteBuilder = builder(child, data);
 
-    return subRouteBuilder ?? buildDefaultWidget(paths: paths, data: data);
+    return subRouteBuilder ?? buildUnsupportedRouteWidget(paths: paths, data: data);
   }
 
-  Widget buildDefaultWidget({
+  Widget buildUnsupportedRouteWidget({
     required List<String> paths,
     required RouteData? data,
   }) {
+    final routePath = '/${paths.join('/')}';
+
     assert(
       false,
       '''
 [NestedRoute] on `buildDefaultWidget` method
 - RouteData($data) is not handled!
-- RouteData($data) is not valid type of route - ${paths.join('/')}.
+- RouteData($data) is not valid type of route - $routePath
 ''',
     );
 
     // TODO: implements 404 Screens
-    return const SizedBox();
+    return Scaffold(
+      body: Center(
+        child: Text('404: invalid route - $routePath'),
+      ),
+    );
   }
 }
