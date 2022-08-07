@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:verby_mobile/account/account.dart';
+import 'package:verby_mobile/app.dart';
+import 'package:verby_mobile/services/services.dart';
 
 void main() {
-  runApp(const MyApp());
-}
+  NavigationService.init(
+    nestedRoutes: [
+      AccountRoutes.route,
+    ],
+  );
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Verby Mobile'),
-        ),
-      ),
-    );
-  }
+  runApp(const App());
 }
