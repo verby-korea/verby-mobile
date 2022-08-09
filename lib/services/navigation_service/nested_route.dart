@@ -78,7 +78,11 @@ class NestedRoute {
     final data = arguments.data;
 
     return arguments.trasition.getRoute(
-      builder: (_) => build(paths: paths, index: index, data: data),
+      builder: (_) => build(
+        paths: paths,
+        index: index,
+        data: data,
+      ),
       fullscreenDialog: arguments.fullscreenDialog,
       settings: settings,
     );
@@ -96,7 +100,7 @@ extension on NestedRoute {
     }
 
     final unsupportedException = NestedRouteException(
-      message: '[NestedRouteException] unsupported route - ${paths.join('/')}',
+      message: 'unsupported route - ${paths.join('/')}',
     );
 
     final subRoute = subRoutes?.firstWhere(

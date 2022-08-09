@@ -159,7 +159,7 @@ void testThrowNestedRouteException() {
 
             error as NestedRouteException;
 
-            expect(error.message, '[NestedRouteException] unsupported route - /mock/test');
+            expect(error.message, 'unsupported route - /mock/test');
           }
         },
       );

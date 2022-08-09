@@ -49,7 +49,11 @@ class NavigationService {
         orElse: () => throw UnsupportedError('$unsupportedErrorType: unsupported route - $name'),
       );
 
-      return rootRoute.buildRoute(paths: paths, index: 1, settings: settings);
+      return rootRoute.buildRoute(
+        paths: paths,
+        index: 1,
+        settings: settings,
+      );
     };
   }
 }

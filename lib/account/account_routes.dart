@@ -1,4 +1,4 @@
-import 'package:verby_mobile/account/screens/login_screen.dart';
+import 'package:verby_mobile/account/account.dart';
 import 'package:verby_mobile/services/services.dart';
 
 class AccountRoutes {
