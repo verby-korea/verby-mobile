@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "verby_mobile debug",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "verby_mobile release",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

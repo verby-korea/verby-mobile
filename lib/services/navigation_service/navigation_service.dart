@@ -2,32 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:verby_mobile/services/services.dart';
 
 class NavigationService {
-  late final GlobalKey<NavigatorState> navigatorKey;
-  late final List<NestedRoute> nestedRoutes;
+  final GlobalKey<NavigatorState> navigatorKey;
+  final List<NestedRoute> nestedRoutes;
   late final RouteFactory routes;
 
-  static final NavigationService _instance = NavigationService._internal();
-
-  NavigationService._internal();
-
-  static NavigationService get instance => _instance;
-
-  factory NavigationService() => _instance;
-
-  static void init({required List<NestedRoute> nestedRoutes}) {
-    nestedRoutes = [
-      // MaterialApp's initialRoute
-      // Even if the route was just /a, the app would start with / and /a loaded
-      NestedRoute(
-        builder: (_, __) => const SizedBox(),
-        name: '',
-      ),
-      ...nestedRoutes,
-    ];
-
-    instance.navigatorKey = GlobalKey<NavigatorState>();
-    instance.nestedRoutes = nestedRoutes;
-    instance.routes = buildRouteFactoryByNestedRoutes(nestedRoutes: nestedRoutes);
+  NavigationService({
+    required List<NestedRoute> nestedRoutes,
+  })  : nestedRoutes = [
+          // MaterialApp's initialRoute
+          // Even if the route was just /a, the app would start with / and /a loaded
+          NestedRoute(
+            builder: (_, __) => const SizedBox(),
+            name: '',
+          ),
+          ...nestedRoutes,
+        ],
+        navigatorKey = GlobalKey<NavigatorState>() //
+  {
+    routes = buildRouteFactoryByNestedRoutes(
+      nestedRoutes: this.nestedRoutes,
+    );
   }
 
   static RouteFactory buildRouteFactoryByNestedRoutes({required List<NestedRoute> nestedRoutes}) {
