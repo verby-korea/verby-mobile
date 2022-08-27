@@ -3,28 +3,29 @@ import 'package:verby_mobile/services/services.dart';
 
 class NavigationService {
   final GlobalKey<NavigatorState> navigatorKey;
-  final List<NestedRoute> nestedRoutes;
-  late final RouteFactory routes;
+
+  late final List<NestedRoute> nestedRoutes;
+  late final RouteFactory onGenerateRoute;
 
   NavigationService({
     required List<NestedRoute> nestedRoutes,
-  })  : nestedRoutes = [
-          // MaterialApp's initialRoute
-          // Even if the route was just /a, the app would start with / and /a loaded
-          NestedRoute(
-            builder: (_, __) => const SizedBox(),
-            name: '',
-          ),
-          ...nestedRoutes,
-        ],
-        navigatorKey = GlobalKey<NavigatorState>() //
-  {
-    routes = buildRouteFactoryByNestedRoutes(
-      nestedRoutes: this.nestedRoutes,
-    );
-  }
+  }) : navigatorKey = GlobalKey<NavigatorState>() {
+    this.nestedRoutes = [
+      // MaterialApp's initialRoute
+      // Even if the route was just /a, the app would start with / and /a loaded
+      NestedRoute(
+        builder: (_, __) => const SizedBox(),
+        name: '',
+      ),
+      ...nestedRoutes,
+    ];
 
-  static RouteFactory buildRouteFactoryByNestedRoutes({required List<NestedRoute> nestedRoutes}) {
+    onGenerateRoute = buildRouteFactoryByNestedRoutes(nestedRoutes: this.nestedRoutes);
+  }
+}
+
+extension on NavigationService {
+  RouteFactory buildRouteFactoryByNestedRoutes({required List<NestedRoute> nestedRoutes}) {
     return (settings) {
       const String unsupportedErrorType = '[buildRouteFactoryByNestedRoutes]';
 

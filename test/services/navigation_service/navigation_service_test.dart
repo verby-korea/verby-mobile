@@ -61,13 +61,13 @@ void testThrowUnsupportedError({required NavigationService navigationService}) {
   group(
     'Test throw UnsupportedError on `buildRouteFactoryByNestedRoutes` method',
     () {
-      final RouteFactory routeFactory = navigationService.routes;
+      final RouteFactory onGenerateRoute = navigationService.onGenerateRoute;
 
       test(
         'Test throw UnsupportedError when RouteSettings.name == null',
         () {
           try {
-            routeFactory(const RouteSettings());
+            onGenerateRoute(const RouteSettings());
           } catch (error) {
             expect(error.runtimeType, UnsupportedError);
 
@@ -84,7 +84,7 @@ void testThrowUnsupportedError({required NavigationService navigationService}) {
           final targetRouteName = _MockRoutes.test1RouteName;
 
           try {
-            routeFactory(RouteSettings(name: targetRouteName));
+            onGenerateRoute(RouteSettings(name: targetRouteName));
           } catch (error) {
             expect(error.runtimeType, UnsupportedError);
 
@@ -101,7 +101,7 @@ void testThrowUnsupportedError({required NavigationService navigationService}) {
           final targetRouteName = _MockRoutes.test1RouteName;
 
           try {
-            routeFactory(RouteSettings(name: targetRouteName));
+            onGenerateRoute(RouteSettings(name: targetRouteName));
           } catch (error) {
             expect(error.runtimeType, UnsupportedError);
 
@@ -122,10 +122,10 @@ void testThrowNestedRouteException({required NavigationService navigationService
       test(
         'Test throw NestedRouteException when `settings.arguments is! RouteArguments?`',
         () {
-          final RouteFactory routeFactory = navigationService.routes;
+          final RouteFactory onGenerateRoute = navigationService.onGenerateRoute;
 
           try {
-            routeFactory(
+            onGenerateRoute(
               RouteSettings(
                 name: _MockRoutes.test1RouteName,
                 arguments: 'Wrogn Arguments Type',
@@ -144,10 +144,10 @@ void testThrowNestedRouteException({required NavigationService navigationService
       test(
         'Test throw NestedRouteException when can\'t find subRoute',
         () {
-          final RouteFactory routeFactory = navigationService.routes;
+          final RouteFactory onGenerateRoute = navigationService.onGenerateRoute;
 
           try {
-            routeFactory(
+            onGenerateRoute(
               const RouteSettings(
                 name: '/mock/test',
                 arguments: RouteArguments(),
@@ -184,7 +184,7 @@ void testBuildUnsupportedRouteWidget({required NavigationService navigationServi
       final widget = MaterialApp(
         navigatorKey: navigationService.navigatorKey,
         initialRoute: _MockRoutes.homeRouteName,
-        onGenerateRoute: navigationService.routes,
+        onGenerateRoute: navigationService.onGenerateRoute,
         navigatorObservers: [navigatorTestObserver],
       );
 
@@ -226,7 +226,7 @@ void testNavigationSucceed({required NavigationService navigationService}) {
       final widget = MaterialApp(
         navigatorKey: navigationService.navigatorKey,
         initialRoute: _MockRoutes.homeRouteName,
-        onGenerateRoute: navigationService.routes,
+        onGenerateRoute: navigationService.onGenerateRoute,
         navigatorObservers: [navigatorTestObserver],
       );
 
