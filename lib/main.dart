@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:verby_mobile/account/account.dart';
 import 'package:verby_mobile/app.dart';
-import 'package:verby_mobile/services/services.dart';
+import 'package:verby_mobile/routes.dart';
 
 void main() {
-  NavigationService.init(
-    nestedRoutes: [
-      AccountRoutes.route,
-    ],
-  );
+  Routes.setRoutes();
 
   runApp(const App());
 }

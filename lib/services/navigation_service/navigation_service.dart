@@ -2,20 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:verby_mobile/services/services.dart';
 
 class NavigationService {
-  late final GlobalKey<NavigatorState> navigatorKey;
+  final GlobalKey<NavigatorState> navigatorKey;
+
   late final List<NestedRoute> nestedRoutes;
-  late final RouteFactory routes;
+  late final RouteFactory onGenerateRoute;
 
-  static final NavigationService _instance = NavigationService._internal();
-
-  NavigationService._internal();
-
-  static NavigationService get instance => _instance;
-
-  factory NavigationService() => _instance;
-
-  static void init({required List<NestedRoute> nestedRoutes}) {
-    nestedRoutes = [
+  NavigationService({
+    required List<NestedRoute> nestedRoutes,
+  }) : navigatorKey = GlobalKey<NavigatorState>() {
+    this.nestedRoutes = [
       // MaterialApp's initialRoute
       // Even if the route was just /a, the app would start with / and /a loaded
       NestedRoute(
@@ -25,12 +20,12 @@ class NavigationService {
       ...nestedRoutes,
     ];
 
-    instance.navigatorKey = GlobalKey<NavigatorState>();
-    instance.nestedRoutes = nestedRoutes;
-    instance.routes = buildRouteFactoryByNestedRoutes(nestedRoutes: nestedRoutes);
+    onGenerateRoute = buildRouteFactoryByNestedRoutes(nestedRoutes: this.nestedRoutes);
   }
+}
 
-  static RouteFactory buildRouteFactoryByNestedRoutes({required List<NestedRoute> nestedRoutes}) {
+extension on NavigationService {
+  RouteFactory buildRouteFactoryByNestedRoutes({required List<NestedRoute> nestedRoutes}) {
     return (settings) {
       const String unsupportedErrorType = '[buildRouteFactoryByNestedRoutes]';
 

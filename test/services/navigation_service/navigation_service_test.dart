@@ -4,75 +4,70 @@ import 'package:verby_mobile/services/services.dart';
 
 import 'navigator_test_observer.dart';
 
-void main() {
-  NavigationService.init(
-    nestedRoutes: [
-      NestedRoute(
-        builder: (child, _) => child,
-        name: 'mock',
-        subRoutes: [
-          NestedRoute(
-            builder: (_, __) => Builder(
-              builder: (context) {
-                final navigator = Navigator.of(context);
+class _MockRoutes {
+  _MockRoutes._();
 
-                return Scaffold(
-                  body: Column(
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () => navigator.pushNamed('/mock/test-1'),
-                        child: const Text('Navigate To Test1'),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () => navigator.pushNamed('/mock/test-2'),
-                        child: const Text('Navigate To Test2'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            name: 'home',
-          ),
-          NestedRoute(
-            builder: (_, __) => const SizedBox(),
-            name: 'test-1',
-          ),
-          NestedRoute(
-            builder: (_, __) => null,
-            name: 'test-2',
-          ),
-        ],
-      ),
+  static const String _rootRouteName = 'mock';
+
+  static final NestedRoute route = NestedRoute(
+    name: _rootRouteName,
+    builder: (child, _) => child,
+    subRoutes: [
+      _home,
+      _test1,
+      _test2,
     ],
+  );
+
+  static final NestedRoute _home = NestedRoute(
+    name: 'home',
+    builder: (_, __) => const _MockHomeScreen(),
+  );
+  static String get homeRouteName => '/$_rootRouteName/${_home.name}';
+
+  static final NestedRoute _test1 = NestedRoute(
+    name: 'test-1',
+    builder: (_, __) => const SizedBox(),
+  );
+  static String get test1RouteName => '/$_rootRouteName/${_test1.name}';
+
+  static final NestedRoute _test2 = NestedRoute(
+    name: 'test-2',
+    builder: (_, __) => null,
+  );
+  static String get test2RouteName => '/$_rootRouteName/${_test2.name}';
+}
+
+void main() {
+  final navigationService = NavigationService(
+    nestedRoutes: [_MockRoutes.route],
   );
 
   group(
     'Test `NavigationService` Unit Test',
     () {
-      testThrowUnsupportedError();
+      testThrowUnsupportedError(navigationService: navigationService);
 
-      testThrowNestedRouteException();
+      testThrowNestedRouteException(navigationService: navigationService);
 
-      testBuildUnsupportedRouteWidget();
+      testBuildUnsupportedRouteWidget(navigationService: navigationService);
 
-      testNavigationSucceed();
+      testNavigationSucceed(navigationService: navigationService);
     },
   );
 }
 
-void testThrowUnsupportedError() {
+void testThrowUnsupportedError({required NavigationService navigationService}) {
   group(
     'Test throw UnsupportedError on `buildRouteFactoryByNestedRoutes` method',
     () {
-      final RouteFactory routeFactory = NavigationService.instance.routes;
+      final RouteFactory onGenerateRoute = navigationService.onGenerateRoute;
 
       test(
         'Test throw UnsupportedError when RouteSettings.name == null',
         () {
           try {
-            routeFactory(const RouteSettings());
+            onGenerateRoute(const RouteSettings());
           } catch (error) {
             expect(error.runtimeType, UnsupportedError);
 
@@ -86,14 +81,16 @@ void testThrowUnsupportedError() {
       test(
         'Test throw UnsupportedError when !RouteSettings.name.startsWith(\'/\');',
         () {
+          final targetRouteName = _MockRoutes.test1RouteName;
+
           try {
-            routeFactory(const RouteSettings(name: 'mock/test-1'));
+            onGenerateRoute(RouteSettings(name: targetRouteName));
           } catch (error) {
             expect(error.runtimeType, UnsupportedError);
 
             error as UnsupportedError;
 
-            expect(error.message, '[buildRouteFactoryByNestedRoutes]: route must start with slash - mock/test-1');
+            expect(error.message, '[buildRouteFactoryByNestedRoutes]: route must start with slash - $targetRouteName');
           }
         },
       );
@@ -101,14 +98,16 @@ void testThrowUnsupportedError() {
       test(
         'Test throw UnsupportedError when can\'t find rootRoute',
         () {
+          final targetRouteName = _MockRoutes.test1RouteName;
+
           try {
-            routeFactory(const RouteSettings(name: '/mock/test-1'));
+            onGenerateRoute(RouteSettings(name: targetRouteName));
           } catch (error) {
             expect(error.runtimeType, UnsupportedError);
 
             error as UnsupportedError;
 
-            expect(error.message, '[buildRouteFactoryByNestedRoutes]: unsupported route - /mock/test-1');
+            expect(error.message, '[buildRouteFactoryByNestedRoutes]: unsupported route - $targetRouteName');
           }
         },
       );
@@ -116,19 +115,19 @@ void testThrowUnsupportedError() {
   );
 }
 
-void testThrowNestedRouteException() {
+void testThrowNestedRouteException({required NavigationService navigationService}) {
   group(
     'Test throw NestedRouteException on `buildRoute` in `buildRouteFactoryByNestedRoute`',
     () {
       test(
         'Test throw NestedRouteException when `settings.arguments is! RouteArguments?`',
         () {
-          final RouteFactory routeFactory = NavigationService.instance.routes;
+          final RouteFactory onGenerateRoute = navigationService.onGenerateRoute;
 
           try {
-            routeFactory(
-              const RouteSettings(
-                name: '/mock/test-1',
+            onGenerateRoute(
+              RouteSettings(
+                name: _MockRoutes.test1RouteName,
                 arguments: 'Wrogn Arguments Type',
               ),
             );
@@ -145,10 +144,10 @@ void testThrowNestedRouteException() {
       test(
         'Test throw NestedRouteException when can\'t find subRoute',
         () {
-          final RouteFactory routeFactory = NavigationService.instance.routes;
+          final RouteFactory onGenerateRoute = navigationService.onGenerateRoute;
 
           try {
-            routeFactory(
+            onGenerateRoute(
               const RouteSettings(
                 name: '/mock/test',
                 arguments: RouteArguments(),
@@ -167,7 +166,7 @@ void testThrowNestedRouteException() {
   );
 }
 
-void testBuildUnsupportedRouteWidget() {
+void testBuildUnsupportedRouteWidget({required NavigationService navigationService}) {
   testWidgets(
     'Test Build UnsupportedRouteWidget when NestedRouteException',
     (WidgetTester widgetTester) async {
@@ -183,9 +182,9 @@ void testBuildUnsupportedRouteWidget() {
         };
 
       final widget = MaterialApp(
-        navigatorKey: NavigationService.instance.navigatorKey,
-        initialRoute: '/mock/home',
-        onGenerateRoute: NavigationService.instance.routes,
+        navigatorKey: navigationService.navigatorKey,
+        initialRoute: _MockRoutes.homeRouteName,
+        onGenerateRoute: navigationService.onGenerateRoute,
         navigatorObservers: [navigatorTestObserver],
       );
 
@@ -196,7 +195,7 @@ void testBuildUnsupportedRouteWidget() {
 
       expect(builder != null, true);
 
-      final context = NavigationService.instance.navigatorKey.currentContext;
+      final context = navigationService.navigatorKey.currentContext;
       expect(context != null, true);
 
       expect(
@@ -207,7 +206,7 @@ void testBuildUnsupportedRouteWidget() {
   );
 }
 
-void testNavigationSucceed() {
+void testNavigationSucceed({required NavigationService navigationService}) {
   testWidgets(
     'Test Navigation Succeed using by NavigationService',
     (WidgetTester widgetTester) async {
@@ -225,9 +224,9 @@ void testNavigationSucceed() {
         };
 
       final widget = MaterialApp(
-        navigatorKey: NavigationService.instance.navigatorKey,
-        initialRoute: '/mock/home',
-        onGenerateRoute: NavigationService.instance.routes,
+        navigatorKey: navigationService.navigatorKey,
+        initialRoute: _MockRoutes.homeRouteName,
+        onGenerateRoute: navigationService.onGenerateRoute,
         navigatorObservers: [navigatorTestObserver],
       );
 
@@ -242,12 +241,37 @@ void testNavigationSucceed() {
       expect(navigatorObservations.length, 1);
       expect(
         navigatorObservations[0],
-        const NavigatorObservation(
+        NavigatorObservation(
           type: ObservationType.push,
-          current: '/mock/test-1',
-          previous: '/mock/home',
+          current: _MockRoutes.test1RouteName,
+          previous: _MockRoutes.homeRouteName,
         ),
       );
     },
   );
+}
+
+class _MockHomeScreen extends StatelessWidget {
+  const _MockHomeScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
+
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          ElevatedButton(
+            onPressed: () => navigator.pushNamed(_MockRoutes.test1RouteName),
+            child: const Text('Navigate To Test1'),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () => navigator.pushNamed(_MockRoutes.test2RouteName),
+            child: const Text('Navigate To Test2'),
+          ),
+        ],
+      ),
+    );
+  }
 }
