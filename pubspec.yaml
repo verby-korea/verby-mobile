@@ -12,7 +12,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # >>> External Packages >>>
   equatable: 2.0.3
+  http: 0.13.5
+  # <<< External Packages <<<
 
 dev_dependencies:
   flutter_test:
