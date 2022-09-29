@@ -11,6 +11,8 @@ class Api {
 }
 
 extension on Api {
+  //TODO: implements invoke Api for multipart file
+
   Future<Map<String, dynamic>?> invokeApi({
     required HttpVerbs verbs,
     required String url,
@@ -35,19 +37,17 @@ extension on Api {
       return null;
     }
 
+    final Map<String, dynamic> bodyJson = jsonDecode(bodyStr);
+
     final bool isSucceed = [
       HttpStatus.ok,
       HttpStatus.created,
     ].contains(statusCode);
-    if (isSucceed) {
-      final Map<String, dynamic> bodyJson = jsonDecode(bodyStr);
-
-      return bodyJson;
-    }
+    if (isSucceed) return bodyJson;
 
     throw ApiCallErrorException(
       statusCode: statusCode,
-      body: jsonDecode(bodyStr),
+      body: bodyJson,
     );
   }
 }
