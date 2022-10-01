@@ -31,7 +31,6 @@ class VerbyInput extends StatefulWidget {
 
   final bool readOnly;
 
-  final double height;
   final EdgeInsets padding;
   final String? hintText;
   final Widget? suffixWidget;
@@ -54,7 +53,6 @@ class VerbyInput extends StatefulWidget {
     this.inputFormatters,
     this.maxLength,
     this.readOnly = false,
-    this.height = 50,
     this.padding = const EdgeInsets.fromLTRB(16, 14, 16, 14),
     this.hintText,
     this.suffixWidget,
