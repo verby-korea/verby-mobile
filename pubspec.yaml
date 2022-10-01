@@ -11,6 +11,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  # >>> Verby Mobile Packages >>>
+  verby_mobile_design_tokens:
+    git:
+      url: https://github.com/verby-korea/verby-mobile-design-tokens.git
+      ref: develop
+  # <<< Verby Mobile Packages <<<
 
   # >>> External Packages >>>
   equatable: 2.0.3
