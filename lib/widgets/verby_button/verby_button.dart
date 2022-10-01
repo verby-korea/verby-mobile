@@ -110,6 +110,9 @@ class VerbyButton extends StatelessWidget {
       disabledChildColor: disabledChildColor,
       innerPadding: innerPadding,
       childTextStyle: childTextStyle,
+      borderSide: borderSide,
+      borderRadius: borderRadius,
+      splashFactory: splashFactory,
     );
   }
 
