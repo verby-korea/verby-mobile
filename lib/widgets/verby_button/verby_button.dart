@@ -70,13 +70,15 @@ class VerbyButton extends StatelessWidget {
   static VerbyButtonStyle styleFrom({
     VerbyButtonSize size = VerbyButtonSize.large,
     VerbyButtonStyleType styleType = VerbyButtonStyleType.primaryBlue,
+    VerbyButtonWidth buttonWidth = VerbyButtonWidth.expand,
     double? height,
-    SemanticColor? defaultColor,
-    SemanticColor? pressedColor,
-    SemanticColor? disabledColor,
-    SemanticColor? childColor,
-    SemanticColor? pressedChildColor,
-    SemanticColor? disabledChildColor,
+    double? width,
+    Palette? defaultColor,
+    Palette? pressedColor,
+    Palette? disabledColor,
+    Palette? childColor,
+    Palette? pressedChildColor,
+    Palette? disabledChildColor,
     EdgeInsetsGeometry? innerPadding,
     TextStyle? childTextStyle,
     BorderSide? borderSide,
@@ -84,14 +86,15 @@ class VerbyButton extends StatelessWidget {
     InteractiveInkFeatureFactory splashFactory = InkRipple.splashFactory,
   }) {
     height ??= size.height;
+    width ??= buttonWidth.value;
 
-    defaultColor ??= styleType.defaultColor;
-    pressedColor ??= styleType.pressedColor;
-    disabledColor ??= styleType.disabledColor;
+    defaultColor ??= styleType.defaultColor.palette;
+    pressedColor ??= styleType.pressedColor.palette;
+    disabledColor ??= styleType.disabledColor.palette;
 
-    childColor ??= styleType.childColor;
-    pressedChildColor ??= styleType.pressedChildColor;
-    disabledChildColor ??= styleType.disabledChildColor;
+    childColor ??= styleType.childColor.palette;
+    pressedChildColor ??= styleType.pressedChildColor.palette;
+    disabledChildColor ??= styleType.disabledChildColor.palette;
 
     innerPadding ??= size.padding;
 
@@ -102,6 +105,7 @@ class VerbyButton extends StatelessWidget {
 
     return VerbyButtonStyle(
       height: height,
+      width: width,
       defaultColor: defaultColor,
       pressedColor: pressedColor,
       disabledColor: disabledColor,
@@ -135,6 +139,7 @@ class VerbyButton extends StatelessWidget {
 
     child = SizedBox(
       height: style.height,
+      width: style.width,
       child: child,
     );
 
