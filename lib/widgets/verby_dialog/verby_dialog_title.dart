@@ -13,7 +13,7 @@ class VerbyDialogTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = typography ?? Typography.h2.bold.setColor(color: SemanticColor.main70);
+    final style = typography ?? Typography.h2.bold.setColorBySemanticColor(color: SemanticColor.main70);
 
     return Text(
       title,
