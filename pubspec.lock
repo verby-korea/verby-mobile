@@ -182,7 +182,7 @@ packages:
     description:
       path: "."
       ref: develop
-      resolved-ref: "2d7a759c0bf62cb509ed8c42e78b008b13c58dfc"
+      resolved-ref: "7673cae6fe5070c32a006721c9221c22aafcf41c"
       url: "https://github.com/verby-korea/verby-mobile-design-tokens.git"
     source: git
     version: "1.0.0"
