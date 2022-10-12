@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:verby_mobile_design_tokens/verby_mobile_design_tokens.dart';
 
 class VerbyDialogStyle extends Equatable {
-  final SemanticColor backgroundColor;
+  final Palette backgroundColor;
 
   final BorderRadius borderRadius;
 

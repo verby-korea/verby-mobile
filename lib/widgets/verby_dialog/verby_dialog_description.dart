@@ -13,7 +13,7 @@ class VerbyDialogDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = typography ?? Typography.body2.regular.setColor(color: SemanticColor.text90);
+    final style = typography ?? Typography.body2.regular.setColorBySemanticColor(color: SemanticColor.text90);
 
     return Text(
       description,

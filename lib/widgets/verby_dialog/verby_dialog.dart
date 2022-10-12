@@ -16,7 +16,7 @@ class VerbyDialog extends StatelessWidget {
   Future show({
     BuildContext? context,
     bool barrierDismissible = true,
-    Color? barrierColor = Colors.black54,
+    Color? barrierColor,
     String? barrierLabel,
     bool useSafeArea = true,
     bool useRootNavigator = true,
@@ -25,6 +25,8 @@ class VerbyDialog extends StatelessWidget {
   }) async {
     context = context ?? Routes.navigationService.navigatorKey.currentContext;
     if (context == null) return;
+
+    barrierColor ??= SemanticColor.dim50.palette;
 
     return await showDialog(
       context: context,
@@ -153,16 +155,16 @@ class VerbyDialog extends StatelessWidget {
   }
 
   static VerbyDialogStyle styleFrom({
-    SemanticColor? backgroundColor,
+    Palette? backgroundColor,
     BorderRadius? borderRadius,
     EdgeInsets? insetPadding,
     EdgeInsets? contentPadding,
   }) {
-    backgroundColor ??= SemanticColor.background10;
+    backgroundColor ??= SemanticColor.background10.palette;
 
     borderRadius ??= BorderRadius.circular(8);
 
-    insetPadding ??= const EdgeInsets.fromLTRB(20, 20, 20, 20);
+    insetPadding ??= const EdgeInsets.fromLTRB(32, 20, 32, 20);
     contentPadding ??= const EdgeInsets.fromLTRB(16, 28, 16, 14);
 
     return VerbyDialogStyle(
@@ -183,7 +185,7 @@ class VerbyDialog extends StatelessWidget {
       child: Container(
         padding: style.contentPadding,
         decoration: BoxDecoration(
-          color: style.backgroundColor.palette,
+          color: style.backgroundColor,
           borderRadius: style.borderRadius,
         ),
         child: child,
