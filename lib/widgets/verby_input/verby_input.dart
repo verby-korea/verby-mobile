@@ -19,6 +19,8 @@ class VerbyInput extends StatefulWidget {
   final void Function(String text)? onChanged;
   final void Function(String text)? onSubmitted;
 
+  final void Function()? onFocus;
+
   final VoidCallback? onTap;
   final VoidCallback? onEditingComplete;
 
@@ -47,6 +49,7 @@ class VerbyInput extends StatefulWidget {
     this.keyboardType,
     this.onChanged,
     this.onSubmitted,
+    this.onFocus,
     this.onTap,
     this.onEditingComplete,
     this.validator,
@@ -93,6 +96,8 @@ class _VerbyInputState extends State<VerbyInput> {
 
     if (widget.focusNode.hasFocus) return VerbyInputStatus.focusValid;
 
+    if (widget.controller.text != '') return VerbyInputStatus.focusValid;
+
     return VerbyInputStatus.unfocus;
   }
 
@@ -116,7 +121,7 @@ class _VerbyInputState extends State<VerbyInput> {
       cursorWidth: 1,
       cursorColor: status.textColor.palette,
       maxLength: widget.maxLength,
-      style: textStyle.setColor(color: status.textColor),
+      style: textStyle.setColorBySemanticColor(color: status.textColor),
       onChanged: (text) {
         setState(() {});
 
@@ -127,12 +132,15 @@ class _VerbyInputState extends State<VerbyInput> {
         final onSubmitted = widget.onSubmitted;
         if (onSubmitted != null) onSubmitted(text);
       },
+      onTap: onTap,
       onEditingComplete: widget.onEditingComplete,
       inputFormatters: widget.inputFormatters,
       readOnly: widget.readOnly,
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle: textStyle.setColor(color: VerbyInputStatus.unfocus.textColor),
+        hintStyle: textStyle.setColorBySemanticColor(
+          color: VerbyInputStatus.unfocus.textColor,
+        ),
         isDense: true,
         filled: false,
         contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -148,7 +156,7 @@ class _VerbyInputState extends State<VerbyInput> {
 
     child = Row(
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Expanded(child: child),
         buildSuffixWidget(),
@@ -156,6 +164,7 @@ class _VerbyInputState extends State<VerbyInput> {
     );
 
     child = Container(
+      height: 54,
       alignment: Alignment.center,
       padding: widget.padding,
       decoration: BoxDecoration(
@@ -164,18 +173,13 @@ class _VerbyInputState extends State<VerbyInput> {
           width: 1.0,
         ),
         borderRadius: BorderRadius.circular(10),
-        color: status.backgroundColor.palette,
+        color: Palette.transparent,
       ),
       child: child,
     );
 
     child = GestureDetector(
-      onTap: () {
-        focusNode.requestFocus();
-
-        final VoidCallback? onTap = widget.onTap;
-        if (onTap != null) onTap();
-      },
+      onTap: onTap,
       child: child,
     );
 
@@ -191,7 +195,9 @@ class _VerbyInputState extends State<VerbyInput> {
               alignment: Alignment.centerLeft,
               child: Text(
                 labelText,
-                style: Typography.body2.medium.setColor(color: SemanticColor.main70),
+                style: Typography.body2.medium.setColorBySemanticColor(
+                  color: SemanticColor.main70,
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -206,7 +212,9 @@ class _VerbyInputState extends State<VerbyInput> {
                 padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                 child: Text(
                   errorText,
-                  style: Typography.caption1.regular.setColor(color: SemanticColor.subCaution),
+                  style: Typography.caption1.regular.setColorBySemanticColor(
+                    color: SemanticColor.subCaution,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -271,8 +279,22 @@ class _VerbyInputState extends State<VerbyInput> {
   }
 
   void focusNodeListener() {
+    final bool hasFocus = widget.focusNode.hasFocus;
+
     setState(() {
-      hasFocus = widget.focusNode.hasFocus;
+      this.hasFocus = hasFocus;
     });
+
+    final void Function()? onFocus = widget.onFocus;
+    if (onFocus != null && hasFocus) {
+      onFocus();
+    }
+  }
+
+  void onTap() {
+    widget.focusNode.requestFocus();
+
+    final VoidCallback? onTap = widget.onTap;
+    if (onTap != null) onTap();
   }
 }
