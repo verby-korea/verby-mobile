@@ -50,3 +50,9 @@ class ApiHttpVerbsException extends ApiException {
           message: 'Use HttpVerbs {post, get, put, patch, delete}',
         );
 }
+
+class ApiResponseBodyMissingException extends ApiException {
+  const ApiResponseBodyMissingException({
+    required String url,
+  }) : super(message: '$url response body is null');
+}

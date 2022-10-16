@@ -40,32 +40,40 @@ void testSucceedParseErrorCode() {
       expectedErrorCode: ErrorCode.common001,
     ),
     ErrorCodeTestCase(
-      parseCode: 'ACCOUNT-001',
-      expectedErrorCode: ErrorCode.account001,
-    ),
-    ErrorCodeTestCase(
-      parseCode: 'ACCOUNT-002',
-      expectedErrorCode: ErrorCode.account002,
-    ),
-    ErrorCodeTestCase(
-      parseCode: 'ACCOUNT-003',
-      expectedErrorCode: ErrorCode.account003,
-    ),
-    ErrorCodeTestCase(
-      parseCode: 'ACCOUNT-004',
-      expectedErrorCode: ErrorCode.account004,
-    ),
-    ErrorCodeTestCase(
-      parseCode: 'ACCOUNT-005',
-      expectedErrorCode: ErrorCode.account005,
-    ),
-    ErrorCodeTestCase(
-      parseCode: 'ACCOUNT-006',
-      expectedErrorCode: ErrorCode.account006,
-    ),
-    ErrorCodeTestCase(
       parseCode: 'USER-001',
       expectedErrorCode: ErrorCode.user001,
+    ),
+    ErrorCodeTestCase(
+      parseCode: 'USER-002',
+      expectedErrorCode: ErrorCode.user002,
+    ),
+    ErrorCodeTestCase(
+      parseCode: 'USER-003',
+      expectedErrorCode: ErrorCode.user003,
+    ),
+    ErrorCodeTestCase(
+      parseCode: 'USER-004',
+      expectedErrorCode: ErrorCode.user004,
+    ),
+    ErrorCodeTestCase(
+      parseCode: 'USER-005',
+      expectedErrorCode: ErrorCode.user005,
+    ),
+    ErrorCodeTestCase(
+      parseCode: 'USER-006',
+      expectedErrorCode: ErrorCode.user006,
+    ),
+    ErrorCodeTestCase(
+      parseCode: 'AUTH-001',
+      expectedErrorCode: ErrorCode.auth001,
+    ),
+    ErrorCodeTestCase(
+      parseCode: 'AUTH-002',
+      expectedErrorCode: ErrorCode.auth002,
+    ),
+    ErrorCodeTestCase(
+      parseCode: 'AUTH-003',
+      expectedErrorCode: ErrorCode.auth003,
     ),
     ErrorCodeTestCase(
       parseCode: 'ARTIST-001',
