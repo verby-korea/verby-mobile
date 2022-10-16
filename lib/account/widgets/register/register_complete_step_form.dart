@@ -12,8 +12,8 @@ class RegisterCompleteStepForm extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        RegisterStepTitle(
-          title: RegisterScreenStep.complete.stepTitle,
+        StepFormTitle(
+          title: RegisterScreenStep.complete.title,
         ),
         const SizedBox(height: 4),
         Align(

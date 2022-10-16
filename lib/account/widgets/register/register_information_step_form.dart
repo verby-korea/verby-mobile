@@ -103,8 +103,8 @@ class _RegisterInformationStepFormState extends State<RegisterInformationStepFor
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                RegisterStepTitle(
-                  title: RegisterScreenStep.information.stepTitle,
+                StepFormTitle(
+                  title: RegisterScreenStep.information.title,
                 ),
                 const SizedBox(height: 18),
                 Row(

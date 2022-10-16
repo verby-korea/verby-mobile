@@ -36,8 +36,8 @@ class _RegisterTermsAndConditionsStepFormState extends State<RegisterTermsAndCon
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                RegisterStepTitle(
-                  title: RegisterScreenStep.termsAndConditions.stepTitle,
+                StepFormTitle(
+                  title: RegisterScreenStep.termsAndConditions.title,
                 ),
                 const SizedBox(height: 18),
                 _SelectAllTermsWidget(

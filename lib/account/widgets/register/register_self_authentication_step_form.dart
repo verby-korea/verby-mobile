@@ -114,8 +114,8 @@ class _RegisterSelfAuthenticationStepFormState extends State<RegisterSelfAuthent
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                RegisterStepTitle(
-                  title: RegisterScreenStep.selfAuthentication.stepTitle,
+                StepFormTitle(
+                  title: RegisterScreenStep.selfAuthentication.title,
                 ),
                 const SizedBox(height: 18),
                 VerbyInput(
