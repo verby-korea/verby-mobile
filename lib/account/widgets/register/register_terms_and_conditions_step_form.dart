@@ -4,7 +4,7 @@ import 'package:verby_mobile/widgets/widgets.dart';
 import 'package:verby_mobile_design_tokens/verby_mobile_design_tokens.dart';
 
 class RegisterTermsAndConditionsStepForm extends StatefulWidget {
-  final void Function({required bool agreedMarketingTerms}) onSubmit;
+  final void Function({required bool allowToMarketingNotification}) onSubmit;
 
   const RegisterTermsAndConditionsStepForm({
     super.key,
@@ -92,7 +92,7 @@ class _RegisterTermsAndConditionsStepFormState extends State<RegisterTermsAndCon
         ),
         VerbyButton.textButton(
           text: '다음',
-          onPressed: canSubmit ? () => widget.onSubmit(agreedMarketingTerms: agreedMarketingTerms) : null,
+          onPressed: canSubmit ? () => widget.onSubmit(allowToMarketingNotification: agreedMarketingTerms) : null,
         ),
       ],
     );

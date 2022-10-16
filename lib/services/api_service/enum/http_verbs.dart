@@ -7,6 +7,7 @@ enum HttpVerbs {
   put,
   patch,
   delete,
+  head,
 }
 
 extension HttpVerbsExtension on HttpVerbs {
@@ -44,6 +45,11 @@ extension HttpVerbsExtension on HttpVerbs {
           uri,
           headers: headers,
           body: body,
+        );
+      case HttpVerbs.head:
+        return http.head(
+          uri,
+          headers: headers,
         );
       default:
         throw const ApiHttpVerbsException();

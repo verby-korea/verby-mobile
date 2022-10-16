@@ -20,6 +20,7 @@ class VerbyInput extends StatefulWidget {
   final void Function(String text)? onSubmitted;
 
   final void Function()? onFocus;
+  final void Function()? onUnFocus;
 
   final VoidCallback? onTap;
   final VoidCallback? onEditingComplete;
@@ -50,6 +51,7 @@ class VerbyInput extends StatefulWidget {
     this.onChanged,
     this.onSubmitted,
     this.onFocus,
+    this.onUnFocus,
     this.onTap,
     this.onEditingComplete,
     this.validator,
@@ -255,7 +257,7 @@ class _VerbyInputState extends State<VerbyInput> {
       );
     }
 
-    if (hasFocus) {
+    if (hasFocus && !widget.readOnly) {
       return GestureDetector(
         behavior: HitTestBehavior.deferToChild,
         onTap: () {
@@ -288,6 +290,15 @@ class _VerbyInputState extends State<VerbyInput> {
     final void Function()? onFocus = widget.onFocus;
     if (onFocus != null && hasFocus) {
       onFocus();
+
+      return;
+    }
+
+    final void Function()? onUnFocus = widget.onUnFocus;
+    if (onUnFocus != null && !hasFocus) {
+      onUnFocus();
+
+      return;
     }
   }
 

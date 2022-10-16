@@ -11,6 +11,7 @@ class AccountRoutes {
     builder: (child, _) => child,
     subRoutes: [
       _login,
+      _register,
     ],
   );
 
@@ -19,4 +20,10 @@ class AccountRoutes {
     builder: (_, __) => const LoginScreen(),
   );
   static String get loginRouteName => '/$_rootRouteName/${_login.name}';
+
+  static final NestedRoute _register = NestedRoute(
+    name: 'register',
+    builder: (_, __) => const RegisterScreen(),
+  );
+  static String get registerRouteName => '/$_rootRouteName/${_register.name}';
 }

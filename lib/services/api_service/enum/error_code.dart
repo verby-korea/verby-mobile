@@ -4,26 +4,32 @@ enum ErrorCode {
   /// **COMMON-001: 유효성 검증에 실패한 경우**
   common001(code: 'COMMON-001'),
 
-  /// **ACCOUNT-001: 계정명이 중복된 경우**
-  account001(code: 'ACCOUNT-001'),
-
-  /// **ACCOUNT-002: 인증에 실패한 경우**
-  account002(code: 'ACCOUNT-002'),
-
-  /// **ACCOUNT-003: 계정을 찾을 수 없는 경우**
-  account003(code: 'ACCOUNT-003'),
-
-  /// **ACCOUNT-004: 권한이 부족한 경우**
-  account004(code: 'ACCOUNT-004'),
-
-  /// **ACCOUNT-005: 해당 key의 인증 토큰이 존재하지 않는 경우**
-  account005(code: 'ACCOUNT-005'),
-
-  /// **ACCOUNT-006: 휴대폰 번호가 중복된 경우**
-  account006(code: 'ACCOUNT-006'),
-
-  /// **USER-001: 유저를 찾을 수 없는 경우**
+  /// **USER-001: 계정명이 중복된 경우**
   user001(code: 'USER-001'),
+
+  /// **USER-002: 인증에 실패한 경우**
+  user002(code: 'USER-002'),
+
+  /// **USER-003: 계정을 찾을 수 없는 경우**
+  user003(code: 'USER-003'),
+
+  /// **USER-004: 권한이 부족한 경우**
+  user004(code: 'USER-004'),
+
+  /// **USER-005: 해당 key의 인증 토큰이 존재하지 않는 경우**
+  user005(code: 'USER-005'),
+
+  /// **USER-006: 휴대폰 번호가 중복된 경우**
+  user006(code: 'USER-006'),
+
+  /// **auth001: 휴대전화 인증 번호가 유효하지 않은 경우**
+  auth001(code: 'AUTH-001'),
+
+  /// **auth002: 인증 토큰이 만료된 경우**
+  auth002(code: 'AUTH-002'),
+
+  /// **auth003: 토큰이 유효하지 않은 경우**
+  auth003(code: 'AUTH-003'),
 
   /// **ARTIST-001: 가수를 찾을 수 없는 경우**
   artist001(code: 'ARTIST-001'),

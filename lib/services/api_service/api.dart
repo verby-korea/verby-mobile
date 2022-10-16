@@ -8,6 +8,63 @@ class Api {
   final ApiClient apiClient;
 
   Api({required this.apiClient});
+
+  String get baseUrl => apiClient.baseUrl;
+
+  Future<PostUsersResponse> postUsers({required PostUsersRequest request}) async {
+    final String url = '$baseUrl/users';
+
+    final Map<String, dynamic>? responseBody = await invokeApi(
+      verbs: HttpVerbs.post,
+      url: url,
+      body: request.toJson(),
+    );
+    if (responseBody == null) throw ApiResponseBodyMissingException(url: url);
+
+    return PostUsersResponse.fromJson(json: responseBody);
+  }
+
+  Future<void> headUsersLoginId({
+    required HeadUsersLoginIdRequest request,
+  }) async {
+    final String url = '$baseUrl/users?login-id=${request.loginId}';
+
+    await invokeApi(
+      verbs: HttpVerbs.head,
+      url: url,
+    );
+
+    return;
+  }
+
+  Future<void> postUsersSendCertificationSms({
+    required PostUsersSendCertificationSmsRequest request,
+  }) async {
+    final String url = '$baseUrl/users/send-certification-sms';
+
+    await invokeApi(
+      verbs: HttpVerbs.post,
+      url: url,
+      body: request.toJson(),
+    );
+
+    return;
+  }
+
+  Future<PostUsersVerificationTokensResponse> postUsersVerificationTokens({
+    required PostUsersVerificationTokensRequest request,
+  }) async {
+    final String url = '$baseUrl/users/verification-tokens';
+
+    final Map<String, dynamic>? responseBody = await invokeApi(
+      verbs: HttpVerbs.post,
+      url: url,
+      body: request.toJson(),
+    );
+    if (responseBody == null) throw ApiResponseBodyMissingException(url: url);
+
+    return PostUsersVerificationTokensResponse.fromJson(json: responseBody);
+  }
 }
 
 extension on Api {
@@ -33,7 +90,13 @@ extension on Api {
     final int statusCode = response.statusCode;
     final String bodyStr = utf8.decode(response.bodyBytes);
 
-    if (statusCode == HttpStatus.noContent && bodyStr == '') {
+    print(statusCode);
+
+    if (statusCode == HttpStatus.ok && verbs == HttpVerbs.head && bodyStr.isEmpty) {
+      return null;
+    }
+
+    if (statusCode == HttpStatus.noContent && bodyStr.isEmpty) {
       return null;
     }
 
