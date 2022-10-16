@@ -8,10 +8,6 @@ enum VerbyInputStatus {
   focusValid(
     borderColor: SemanticColor.main70,
     textColor: SemanticColor.text90,
-  ),
-  inValid(
-    borderColor: SemanticColor.main70,
-    textColor: SemanticColor.text90,
   );
 
   final SemanticColor borderColor;

@@ -11,6 +11,18 @@ class Api {
 
   String get baseUrl => apiClient.baseUrl;
 
+  Future<void> postUsersSessions({required PostUsersSessionsRequest request}) async {
+    final String url = '$baseUrl/users/sessions';
+
+    await invokeApi(
+      verbs: HttpVerbs.post,
+      url: url,
+      body: request.toJson(),
+    );
+
+    return;
+  }
+
   Future<PostUsersResponse> postUsers({required PostUsersRequest request}) async {
     final String url = '$baseUrl/users';
 

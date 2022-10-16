@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart' hide Typography;
 import 'package:verby_mobile/account/account.dart';
-import 'package:verby_mobile/routes.dart';
+import 'package:verby_mobile/services/screen_helper.dart';
 import 'package:verby_mobile/widgets/widgets.dart';
 import 'package:verby_mobile_design_tokens/verby_mobile_design_tokens.dart';
 
@@ -54,20 +52,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   RegisterScreenStep currentStep = RegisterScreenStep.termsAndConditions;
 
   bool get isCompleteStep => currentStep == RegisterScreenStep.complete;
-
-  bool get isKeyboardShowing {
-    final rootContext = Routes.navigationService.navigatorKey.currentContext;
-    if (rootContext == null) return false;
-
-    return MediaQuery.of(rootContext).viewInsets.bottom != 0.0;
-  }
-
-  double get bottomPadding {
-    if (isKeyboardShowing) return 8;
-
-    final double bottomViewPadding = MediaQuery.of(context).viewPadding.bottom;
-    return max(bottomViewPadding, 20);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +116,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 18, 20, bottomPadding),
+                padding: EdgeInsets.fromLTRB(
+                  20,
+                  18,
+                  20,
+                  getScreenBottomPadding(context: context),
+                ),
                 child: buildStepForm(),
               ),
             ),
