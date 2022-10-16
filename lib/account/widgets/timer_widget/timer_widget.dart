@@ -1,44 +1,8 @@
 import 'package:flutter/material.dart' hide Typography;
-import 'package:flutter/scheduler.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
+import 'package:verby_mobile/account/account.dart';
 import 'package:verby_mobile_design_tokens/verby_mobile_design_tokens.dart';
-
-class TimerWidgetController implements TickerProvider {
-  final Duration duration;
-  final VoidCallback? onEnd;
-
-  late final AnimationController animationController;
-
-  TimerWidgetController({
-    this.duration = const Duration(minutes: 3),
-    this.onEnd,
-  }) {
-    animationController = AnimationController(
-      vsync: this,
-      duration: duration,
-    );
-  }
-
-  void start() => animationController.forward();
-
-  void stop() => animationController.stop();
-
-  void reset() => animationController.reset();
-
-  void restart() {
-    reset();
-
-    start();
-  }
-
-  void addListener(void Function() listener) => animationController.addListener(listener);
-
-  void addStatusListener(void Function(AnimationStatus) listener) => animationController.addStatusListener(listener);
-
-  @override
-  Ticker createTicker(TickerCallback onTick) => Ticker(onTick);
-}
 
 class TimerWidget extends StatefulWidget {
   final TimerWidgetController controller;

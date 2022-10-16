@@ -63,7 +63,7 @@ class _RegisterInformationStepFormState extends State<RegisterInformationStepFor
 
   String? idInputErrorMessage;
 
-  bool isIdNotDuplicated = true;
+  bool isIdNotDuplicated = false;
 
   bool get isIdValid => idController.text.isNotEmpty;
 
@@ -120,10 +120,12 @@ class _RegisterInformationStepFormState extends State<RegisterInformationStepFor
                         onChanged: (_) {
                           if (!mounted) return;
                           if (idInputErrorMessage != null) idInputErrorMessage = null;
+                          // TODO: 아이디 중복 확인 api가 변경되면 주석 해제
                           // if (isIdNotDuplicated) isIdNotDuplicated = false;
 
                           setState(() {});
                         },
+                        onSubmitted: (_) => checkDuplicateLoginId(),
                         validator: (_) => idInputErrorMessage,
                         autoFocus: true,
                         hintText: '아이디를 입력해 주세요.',
@@ -187,6 +189,7 @@ class _RegisterInformationStepFormState extends State<RegisterInformationStepFor
 
                     setState(() {});
                   },
+                  onSubmitted: (_) => onSubmit(),
                   hintText: '한번 더 입력해 주세요.',
                   obsecureText: true,
                   validator: (text) {

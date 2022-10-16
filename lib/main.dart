@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:verby_mobile/app.dart';
 import 'package:verby_mobile/routes.dart';
-import 'package:verby_mobile/services/api_service/index.dart';
+import 'package:verby_mobile/services/services.dart';
 
 void main() {
   Routes.setRoutes();

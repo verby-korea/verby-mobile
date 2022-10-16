@@ -90,8 +90,6 @@ extension on Api {
     final int statusCode = response.statusCode;
     final String bodyStr = utf8.decode(response.bodyBytes);
 
-    print(statusCode);
-
     if (statusCode == HttpStatus.ok && verbs == HttpVerbs.head && bodyStr.isEmpty) {
       return null;
     }
