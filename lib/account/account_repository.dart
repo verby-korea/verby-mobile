@@ -2,6 +2,24 @@ import 'package:either_dart/either.dart';
 import 'package:verby_mobile/services/services.dart';
 
 class AccountRepository {
+  Future<Either<Failure, void>> login({
+    required String loginId,
+    required String password,
+  }) async {
+    try {
+      final PostUsersSessionsRequest request = PostUsersSessionsRequest(
+        loginId: loginId,
+        password: password,
+      );
+
+      return Right(
+        await ApiService.instance.api.postUsersSessions(request: request),
+      );
+    } catch (e) {
+      return Left(e.toFailure());
+    }
+  }
+
   Future<Either<Failure, String>> register({
     required String loginId,
     required String password,

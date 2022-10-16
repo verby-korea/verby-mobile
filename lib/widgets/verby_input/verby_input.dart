@@ -94,8 +94,6 @@ class _VerbyInputState extends State<VerbyInput> {
   }
 
   VerbyInputStatus get status {
-    if (errorText != null) return VerbyInputStatus.inValid;
-
     if (widget.focusNode.hasFocus) return VerbyInputStatus.focusValid;
 
     if (widget.controller.text != '') return VerbyInputStatus.focusValid;
