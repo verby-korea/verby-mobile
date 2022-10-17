@@ -41,6 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final NavigatorState navigator = Navigator.of(context);
+
     final Palette backgroundColor = SemanticColor.background10.palette;
 
     const Palette graySupportTextButtonColor = Palette.gray70;
@@ -122,7 +124,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           _SupportTextButton(
                             text: '아이디 찾기',
                             textColor: graySupportTextButtonColor,
-                            onTap: () {},
+                            onTap: () => navigator.pushNamed(
+                              AccountRoutes.findIdRouteName,
+                              arguments: const RouteArguments(
+                                trasition: RouteTransitions.slideTop,
+                              ),
+                            ),
                           ),
                           _SupportTextButton(
                             text: '비밀번호 재설정',
@@ -132,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           _SupportTextButton(
                             text: '회원가입',
                             textColor: mainSupportTextButtonColor,
-                            onTap: () => Navigator.of(context).pushNamed(
+                            onTap: () => navigator.pushNamed(
                               AccountRoutes.registerRouteName,
                               arguments: const RouteArguments(
                                 trasition: RouteTransitions.slideTop,

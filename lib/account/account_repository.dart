@@ -97,4 +97,18 @@ class AccountRepository {
       return Left(e.toFailure());
     }
   }
+
+  Future<Either<Failure, GetUsersLoginIdResponse>> findId({required String token}) async {
+    try {
+      final GetUsersLoginIdRequest request = GetUsersLoginIdRequest(token: token);
+
+      final GetUsersLoginIdResponse response = await ApiService.instance.api.getUsersLoginId(
+        request: request,
+      );
+
+      return Right(response);
+    } catch (e) {
+      return Left(e.toFailure());
+    }
+  }
 }

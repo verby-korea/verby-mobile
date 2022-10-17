@@ -77,6 +77,20 @@ class Api {
 
     return PostUsersVerificationTokensResponse.fromJson(json: responseBody);
   }
+
+  Future<GetUsersLoginIdResponse> getUsersLoginId({
+    required GetUsersLoginIdRequest request,
+  }) async {
+    final String url = '$baseUrl/users/login-id?verification_token=${request.token}';
+
+    final Map<String, dynamic>? responseBody = await invokeApi(
+      verbs: HttpVerbs.get,
+      url: url,
+    );
+    if (responseBody == null) throw ApiResponseBodyMissingException(url: url);
+
+    return GetUsersLoginIdResponse.fromJson(json: responseBody);
+  }
 }
 
 extension on Api {

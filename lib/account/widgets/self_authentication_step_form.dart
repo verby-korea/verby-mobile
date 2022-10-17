@@ -1,38 +1,23 @@
 import 'package:either_dart/either.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' hide Typography;
-// ignore: depend_on_referenced_packages
-import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 import 'package:verby_mobile/account/account.dart';
 import 'package:verby_mobile/services/services.dart';
 import 'package:verby_mobile/widgets/widgets.dart';
 
-class RegisterSelfAuthenticationStepForm extends StatefulWidget {
-  final void Function({
-    required String name,
-    required String birthday,
-    required String phone,
-    required String token,
-    required int gender,
-  }) onSubmit;
+class SelfAuthenticationStepForm extends StatefulWidget {
+  final void Function({required String token}) onSumbit;
 
-  const RegisterSelfAuthenticationStepForm({
+  const SelfAuthenticationStepForm({
     super.key,
-    required this.onSubmit,
+    required this.onSumbit,
   });
 
   @override
-  State<RegisterSelfAuthenticationStepForm> createState() => _RegisterSelfAuthenticationStepFormState();
+  State<SelfAuthenticationStepForm> createState() => _SelfAuthenticationStepFormState();
 }
 
-class _RegisterSelfAuthenticationStepFormState extends State<RegisterSelfAuthenticationStepForm> {
+class _SelfAuthenticationStepFormState extends State<SelfAuthenticationStepForm> {
   final AccountRepository accountRepository = AccountRepository();
-
-  final TextEditingController nameController = TextEditingController();
-  final FocusNode nameFocus = FocusNode();
-
-  final TextEditingController birthdayController = TextEditingController();
-  final FocusNode birthdayFocus = FocusNode();
 
   final TextEditingController phoneController = TextEditingController();
   final FocusNode phoneFocus = FocusNode();
@@ -55,24 +40,6 @@ class _RegisterSelfAuthenticationStepFormState extends State<RegisterSelfAuthent
 
   bool isSentCertificationNumber = false;
 
-  bool get canSubmit {
-    final bool isNameValid = nameController.text.isNotEmpty;
-    final bool isBirthdayValid = birthdayController.text.length == 14;
-    final bool isPhoneValid = phoneController.text.length == 13 && phoneInputErrorMessage == null;
-
-    if (isSentCertificationNumber) {
-      final bool isCertificationNumberValid = certificationNumberController.text.length == 4;
-
-      return isNameValid &&
-          isBirthdayValid &&
-          isPhoneValid &&
-          isCertificationNumberValid &&
-          certificationNumberInputErrorMessage == null;
-    }
-
-    return isNameValid && isBirthdayValid && isPhoneValid;
-  }
-
   String get submitButtonTitle {
     if (isSentCertificationNumber) return '인증하기';
 
@@ -85,14 +52,20 @@ class _RegisterSelfAuthenticationStepFormState extends State<RegisterSelfAuthent
     return '정보를 잘못 입력하신 경우\n인증번호가 전송되지 않을 수 있습니다.';
   }
 
+  bool get canSubmit {
+    final bool isPhoneValid = phoneController.text.length == 13 && phoneInputErrorMessage == null;
+
+    if (isSentCertificationNumber) {
+      final bool isCertificationNumberValid = certificationNumberController.text.length == 4;
+
+      return isPhoneValid && isCertificationNumberValid && certificationNumberInputErrorMessage == null;
+    }
+
+    return isPhoneValid;
+  }
+
   @override
   void dispose() {
-    nameController.dispose();
-    nameFocus.dispose();
-
-    birthdayController.dispose();
-    birthdayFocus.dispose();
-
     phoneController.dispose();
     phoneFocus.dispose();
 
@@ -120,59 +93,9 @@ class _RegisterSelfAuthenticationStepFormState extends State<RegisterSelfAuthent
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 StepFormTitle(
-                  title: RegisterScreenStep.selfAuthentication.title,
+                  title: FindIdScreenStep.selfAuthentication.title,
                 ),
                 const SizedBox(height: 18),
-                VerbyInput(
-                  controller: nameController,
-                  focusNode: nameFocus,
-                  labelText: '이름',
-                  autoFocus: true,
-                  textInputAction: TextInputAction.next,
-                  onChanged: (_) {
-                    if (!mounted) return;
-
-                    setState(() {});
-                  },
-                  hintText: '이름을 입력해 주세요.',
-                ),
-                const SizedBox(height: 12),
-                VerbyInput(
-                  controller: birthdayController,
-                  focusNode: birthdayFocus,
-                  labelText: '생년월일',
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  onChanged: (_) {
-                    if (!mounted) return;
-
-                    setState(() {});
-                  },
-                  onUnFocus: () {
-                    if (!mounted) return;
-
-                    final String birthday = birthdayController.text;
-
-                    if (birthday.length >= 8) {
-                      final String maskedBirthday = '${birthday.replaceAll('*', '')}******';
-
-                      birthdayController.text = maskedBirthday;
-                      birthdayController.selection = TextSelection.collapsed(
-                        offset: maskedBirthday.length,
-                      );
-                    }
-
-                    setState(() {});
-                  },
-                  inputFormatters: [
-                    MaskedTextInputFormatter(
-                      masks: <String>['xxxxxx-x'],
-                      separator: '-',
-                    ),
-                  ],
-                  hintText: '생년월일 6자리와 뒤 1자리를 입력해 주세요.',
-                ),
-                const SizedBox(height: 12),
                 VerbyInput(
                   controller: phoneController,
                   focusNode: phoneFocus,
@@ -228,13 +151,13 @@ class _RegisterSelfAuthenticationStepFormState extends State<RegisterSelfAuthent
         const SizedBox(height: 8),
         VerbyButton.textButton(
           text: submitButtonTitle,
-          onPressed: canSubmit ? onPressedSubmitButton : null,
+          onPressed: canSubmit ? onSubmit : null,
         ),
       ],
     );
   }
 
-  void onPressedSubmitButton() async {
+  void onSubmit() {
     if (!canSubmit) return;
 
     if (isSentCertificationNumber) {
@@ -248,8 +171,6 @@ class _RegisterSelfAuthenticationStepFormState extends State<RegisterSelfAuthent
 
   void sendCertificationNumber() async {
     if (!canSubmit) return;
-
-    // TODO: 전화번호 중복확인 후 Dialog 보여주는 작업
 
     final String phone = phoneController.text.replaceAll('-', '');
 
@@ -311,31 +232,9 @@ class _RegisterSelfAuthenticationStepFormState extends State<RegisterSelfAuthent
       return;
     }
 
-    final List<String> splitBirthday = birthdayController.text.replaceAll('*', '').split('-');
+    final String token = eitherResult.right;
 
-    String birthday = splitBirthday.first;
-    final int divisionCode = int.parse(splitBirthday.last);
-
-    // NOTE: 한국인 1900~, 외국인 1900~
-    if ([1, 2, 5, 6].contains(divisionCode)) {
-      birthday = '19$birthday';
-    } // NOTE: 한국인 2000~, 외국인 2000~
-    else if ([3, 4, 7, 8].contains(divisionCode)) {
-      birthday = '20$birthday';
-    } // NOTE: 한국인 1800~
-    else if ([9, 0].contains(divisionCode)) {
-      birthday = '18$birthday';
-    }
-
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
-
-    widget.onSubmit(
-      name: nameController.text,
-      phone: phone,
-      birthday: formatter.format(DateTime.parse(birthday)),
-      token: eitherResult.right,
-      gender: divisionCode,
-    );
+    widget.onSumbit(token: token);
 
     return;
   }

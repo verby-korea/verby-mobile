@@ -252,9 +252,7 @@ class _RegisterInformationStepFormState extends State<RegisterInformationStepFor
       name: data.name,
       phone: data.phone,
       gender: data.gender,
-      birthday: '2002-11-08',
-      // TODO: Api 생년월일 migration 완료되면 변경
-      // birthday: data.birthday,
+      birthday: data.birthday,
       allowToMarketingNotification: data.allowToMarketingNotification,
       token: data.token,
     );
