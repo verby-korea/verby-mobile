@@ -66,8 +66,7 @@ class FindIdSuccessStepForm extends StatelessWidget {
         StepFormSupportTextButton(
           text: '비밀번호 찾기',
           onTap: () => navigator.pushNamedAndRemoveUntil(
-            // TODO: 비밀번호 찾기 화면 Routes로 변경
-            AccountRoutes.registerRouteName,
+            AccountRoutes.passwordResetRouteName,
             (route) => route.settings.name == AccountRoutes.loginRouteName,
             arguments: const RouteArguments(
               trasition: RouteTransitions.slideTop,

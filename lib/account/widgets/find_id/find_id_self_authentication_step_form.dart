@@ -4,19 +4,19 @@ import 'package:verby_mobile/account/account.dart';
 import 'package:verby_mobile/services/services.dart';
 import 'package:verby_mobile/widgets/widgets.dart';
 
-class SelfAuthenticationStepForm extends StatefulWidget {
+class FindIdSelfAuthenticationStepForm extends StatefulWidget {
   final void Function({required String token}) onSumbit;
 
-  const SelfAuthenticationStepForm({
+  const FindIdSelfAuthenticationStepForm({
     super.key,
     required this.onSumbit,
   });
 
   @override
-  State<SelfAuthenticationStepForm> createState() => _SelfAuthenticationStepFormState();
+  State<FindIdSelfAuthenticationStepForm> createState() => _FindIdSelfAuthenticationStepFormState();
 }
 
-class _SelfAuthenticationStepFormState extends State<SelfAuthenticationStepForm> {
+class _FindIdSelfAuthenticationStepFormState extends State<FindIdSelfAuthenticationStepForm> {
   final AccountRepository accountRepository = AccountRepository();
 
   final TextEditingController phoneController = TextEditingController();
