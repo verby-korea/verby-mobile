@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart' hide Typography;
 import 'package:verby_mobile_design_tokens/verby_mobile_design_tokens.dart';
 
-class RegisterStepTitle extends StatelessWidget {
+class StepFormTitle extends StatelessWidget {
   final String title;
 
-  const RegisterStepTitle({
+  const StepFormTitle({
     super.key,
     required this.title,
   });

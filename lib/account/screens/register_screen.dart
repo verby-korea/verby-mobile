@@ -6,27 +6,27 @@ import 'package:verby_mobile_design_tokens/verby_mobile_design_tokens.dart';
 
 enum RegisterScreenStep {
   termsAndConditions(
-    stepTitle: 'STEP.1 약관 동의',
+    title: 'STEP.1 약관 동의',
     progressPercentage: 0.33,
   ),
   selfAuthentication(
-    stepTitle: 'STEP.2 본인인증',
+    title: 'STEP.2 본인인증',
     progressPercentage: 0.66,
   ),
   information(
-    stepTitle: 'STEP.3 개인정보',
+    title: 'STEP.3 개인정보',
     progressPercentage: 1.0,
   ),
   complete(
-    stepTitle: '회원가입이 완료됐습니다.',
+    title: '회원가입이 완료됐습니다.',
     progressPercentage: 0.0,
   );
 
-  final String stepTitle;
+  final String title;
   final double progressPercentage;
 
   const RegisterScreenStep({
-    required this.stepTitle,
+    required this.title,
     required this.progressPercentage,
   });
 }

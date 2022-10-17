@@ -12,6 +12,7 @@ class AccountRoutes {
     subRoutes: [
       _login,
       _register,
+      _findId,
     ],
   );
 
@@ -26,4 +27,10 @@ class AccountRoutes {
     builder: (_, __) => const RegisterScreen(),
   );
   static String get registerRouteName => '/$_rootRouteName/${_register.name}';
+
+  static final NestedRoute _findId = NestedRoute(
+    name: 'find-id',
+    builder: (_, __) => const FindIdScreen(),
+  );
+  static String get findIdRouteName => '/$_rootRouteName/${_findId.name}';
 }
