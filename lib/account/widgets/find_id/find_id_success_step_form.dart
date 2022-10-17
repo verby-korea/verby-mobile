@@ -52,6 +52,7 @@ class FindIdSuccessStepForm extends StatelessWidget {
                   color: SemanticColor.text90,
                 ),
               ),
+              const SizedBox(height: 4),
               Text(
                 '$createdAt 가입',
                 style: Typography.caption2.regular.setColorByPalette(
