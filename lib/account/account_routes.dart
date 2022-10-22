@@ -13,6 +13,7 @@ class AccountRoutes {
       _login,
       _register,
       _findId,
+      _passwordReset,
     ],
   );
 
@@ -33,4 +34,10 @@ class AccountRoutes {
     builder: (_, __) => const FindIdScreen(),
   );
   static String get findIdRouteName => '/$_rootRouteName/${_findId.name}';
+
+  static final NestedRoute _passwordReset = NestedRoute(
+    name: 'password-reset',
+    builder: (_, __) => const PasswordResetScreen(),
+  );
+  static String get passwordResetRouteName => '/$_rootRouteName/${_passwordReset.name}';
 }

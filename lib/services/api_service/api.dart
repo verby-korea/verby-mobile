@@ -91,6 +91,20 @@ class Api {
 
     return GetUsersLoginIdResponse.fromJson(json: responseBody);
   }
+
+  Future<void> putUsersPassword({
+    required PutUsersPasswordRequest request,
+  }) async {
+    final String url = '$baseUrl/users/password?verification_token=${request.verificationToken}';
+
+    await invokeApi(
+      verbs: HttpVerbs.put,
+      url: url,
+      body: request.toJson(),
+    );
+
+    return;
+  }
 }
 
 extension on Api {

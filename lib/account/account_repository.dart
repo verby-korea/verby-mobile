@@ -111,4 +111,20 @@ class AccountRepository {
       return Left(e.toFailure());
     }
   }
+
+  Future<Either<Failure, void>> resetPassword({
+    required String token,
+    required String password,
+  }) async {
+    try {
+      final PutUsersPasswordRequest request = PutUsersPasswordRequest(
+        verificationToken: token,
+        password: password,
+      );
+
+      return Right(await ApiService.instance.api.putUsersPassword(request: request));
+    } catch (e) {
+      return Left(e.toFailure());
+    }
+  }
 }
