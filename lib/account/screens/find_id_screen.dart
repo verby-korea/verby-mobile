@@ -91,7 +91,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
         return const FindIdFailStepForm();
       case FindIdScreenStep.selfAuthentication:
       default:
-        return SelfAuthenticationStepForm(
+        return FindIdSelfAuthenticationStepForm(
           onSumbit: submitOnSelfAuthenticationStep,
         );
     }

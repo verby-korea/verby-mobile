@@ -4,20 +4,23 @@ import 'package:verby_mobile/account/account.dart';
 import 'package:verby_mobile/services/services.dart';
 import 'package:verby_mobile/widgets/widgets.dart';
 
-class SelfAuthenticationStepForm extends StatefulWidget {
-  final void Function({required String token}) onSumbit;
+class PasswordResetSelfAuthenticationStepForm extends StatefulWidget {
+  final void Function({required String token}) onSubmit;
 
-  const SelfAuthenticationStepForm({
+  const PasswordResetSelfAuthenticationStepForm({
     super.key,
-    required this.onSumbit,
+    required this.onSubmit,
   });
 
   @override
-  State<SelfAuthenticationStepForm> createState() => _SelfAuthenticationStepFormState();
+  State<PasswordResetSelfAuthenticationStepForm> createState() => _PasswordResetSelfAuthenticationStepFormState();
 }
 
-class _SelfAuthenticationStepFormState extends State<SelfAuthenticationStepForm> {
+class _PasswordResetSelfAuthenticationStepFormState extends State<PasswordResetSelfAuthenticationStepForm> {
   final AccountRepository accountRepository = AccountRepository();
+
+  final TextEditingController idController = TextEditingController();
+  final FocusNode idFocus = FocusNode();
 
   final TextEditingController phoneController = TextEditingController();
   final FocusNode phoneFocus = FocusNode();
@@ -28,13 +31,14 @@ class _SelfAuthenticationStepFormState extends State<SelfAuthenticationStepForm>
   late final TimerWidgetController timerWidgetController = TimerWidgetController(
     onEnd: () {
       setState(() {
-        certificationNumberInputErrorMessage = '인증번호가 일치하지 않습니다. 다시 확인해 주세요.';
+        certificationNumberInputErrorMessage = '입력 시간이 초과되었습니다. 재전송 버튼을 눌러주세요.';
       });
     },
   );
 
   final ScrollController scrollController = ScrollController();
 
+  String? idInputErrorMessage;
   String? phoneInputErrorMessage;
   String? certificationNumberInputErrorMessage;
 
@@ -53,19 +57,23 @@ class _SelfAuthenticationStepFormState extends State<SelfAuthenticationStepForm>
   }
 
   bool get canSubmit {
+    final bool isIdValid = idController.text.isNotEmpty && idInputErrorMessage == null;
     final bool isPhoneValid = phoneController.text.length == 13 && phoneInputErrorMessage == null;
 
     if (isSentCertificationNumber) {
       final bool isCertificationNumberValid = certificationNumberController.text.length == 4;
 
-      return isPhoneValid && isCertificationNumberValid && certificationNumberInputErrorMessage == null;
+      return isIdValid && isPhoneValid && isCertificationNumberValid && certificationNumberInputErrorMessage == null;
     }
 
-    return isPhoneValid;
+    return isIdValid && isPhoneValid;
   }
 
   @override
   void dispose() {
+    idController.dispose();
+    idFocus.dispose();
+
     phoneController.dispose();
     phoneFocus.dispose();
 
@@ -93,9 +101,25 @@ class _SelfAuthenticationStepFormState extends State<SelfAuthenticationStepForm>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 StepFormTitle(
-                  title: FindIdScreenStep.selfAuthentication.title,
+                  title: PasswordResetScreenStep.selfAuthentication.title,
                 ),
                 const SizedBox(height: 18),
+                VerbyInput(
+                  controller: idController,
+                  focusNode: idFocus,
+                  labelText: '아이디',
+                  textInputAction: TextInputAction.next,
+                  onChanged: (_) {
+                    if (!mounted) return;
+                    if (idInputErrorMessage != null) idInputErrorMessage = null;
+                    if (certificationNumberController.text.isNotEmpty) certificationNumberController.text = '';
+
+                    setState(() {});
+                  },
+                  validator: (_) => idInputErrorMessage,
+                  hintText: '가입한 아이디를 입력해 주세요.',
+                ),
+                const SizedBox(height: 12),
                 VerbyInput(
                   controller: phoneController,
                   focusNode: phoneFocus,
@@ -105,6 +129,7 @@ class _SelfAuthenticationStepFormState extends State<SelfAuthenticationStepForm>
                   onChanged: (_) {
                     if (!mounted) return;
                     if (phoneInputErrorMessage != null) phoneInputErrorMessage = null;
+                    if (certificationNumberController.text.isNotEmpty) certificationNumberController.text = '';
 
                     setState(() {});
                   },
@@ -139,7 +164,7 @@ class _SelfAuthenticationStepFormState extends State<SelfAuthenticationStepForm>
                     suffixWidget: TimerWidget(controller: timerWidgetController),
                   ),
                 ],
-                const SizedBox(height: 8),
+                const SizedBox(height: 16),
               ],
             ),
           ),
@@ -171,6 +196,18 @@ class _SelfAuthenticationStepFormState extends State<SelfAuthenticationStepForm>
 
   void sendCertificationNumber() async {
     if (!canSubmit) return;
+
+    final String id = idController.text;
+
+    final Either<Failure, void> duplicatedIdResult = await accountRepository.checkDuplicateLoginId(loginId: id);
+
+    if (duplicatedIdResult.isLeft) {
+      setState(() {
+        idInputErrorMessage = '가입되지 않은 아이디 입니다.';
+      });
+
+      return;
+    }
 
     final String phone = phoneController.text.replaceAll('-', '');
 
@@ -227,14 +264,12 @@ class _SelfAuthenticationStepFormState extends State<SelfAuthenticationStepForm>
 
       scrollController.jumpTo(scrollController.position.maxScrollExtent);
 
-      timerWidgetController.stop();
-
       return;
     }
 
     final String token = eitherResult.right;
 
-    widget.onSumbit(token: token);
+    widget.onSubmit(token: token);
 
     return;
   }

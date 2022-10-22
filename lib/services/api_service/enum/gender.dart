@@ -1,6 +1,6 @@
 enum Gender {
   male(value: 'MALE'),
-  female(value: 'FAMALE');
+  female(value: 'FEMALE');
 
   final String value;
 

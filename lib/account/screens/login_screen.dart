@@ -41,8 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final NavigatorState navigator = Navigator.of(context);
-
     final Palette backgroundColor = SemanticColor.background10.palette;
 
     const Palette graySupportTextButtonColor = Palette.gray70;
@@ -124,26 +122,22 @@ class _LoginScreenState extends State<LoginScreen> {
                           _SupportTextButton(
                             text: '아이디 찾기',
                             textColor: graySupportTextButtonColor,
-                            onTap: () => navigator.pushNamed(
-                              AccountRoutes.findIdRouteName,
-                              arguments: const RouteArguments(
-                                trasition: RouteTransitions.slideTop,
-                              ),
+                            onTap: () => navigateToAccountSupportScreen(
+                              routeName: AccountRoutes.findIdRouteName,
                             ),
                           ),
                           _SupportTextButton(
                             text: '비밀번호 재설정',
                             textColor: graySupportTextButtonColor,
-                            onTap: () {},
+                            onTap: () => navigateToAccountSupportScreen(
+                              routeName: AccountRoutes.passwordResetRouteName,
+                            ),
                           ),
                           _SupportTextButton(
                             text: '회원가입',
                             textColor: mainSupportTextButtonColor,
-                            onTap: () => navigator.pushNamed(
-                              AccountRoutes.registerRouteName,
-                              arguments: const RouteArguments(
-                                trasition: RouteTransitions.slideTop,
-                              ),
+                            onTap: () => navigateToAccountSupportScreen(
+                              routeName: AccountRoutes.registerRouteName,
                             ),
                           ),
                         ].expand((element) => [const _SupportTextButtonDivider(), element]).skip(1).toList(),
@@ -187,6 +181,17 @@ class _LoginScreenState extends State<LoginScreen> {
       buttonTitle: '확인',
       onPressed: () => Navigator.of(context).pop(),
     ).show();
+
+    return;
+  }
+
+  void navigateToAccountSupportScreen({required String routeName}) {
+    Navigator.of(context).pushNamed(
+      routeName,
+      arguments: const RouteArguments(
+        trasition: RouteTransitions.slideTop,
+      ),
+    );
 
     return;
   }
