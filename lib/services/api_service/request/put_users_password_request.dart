@@ -20,5 +20,5 @@ class PutUsersPasswordRequest extends Equatable {
   }
 
   @override
-  List<Object> get props => [verificationToken];
+  List<Object> get props => [verificationToken, password];
 }
